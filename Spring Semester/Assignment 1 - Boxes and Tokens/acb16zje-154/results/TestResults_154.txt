@@ -1,0 +1,169 @@
+                                                    
+=================================              
+AUTOMATED TEST RESULTS: 154                
+=================================              
+                                                    
+
+  ================ PROBLEM 1: maxBoxNum
+    ==== Boundaries
+      maxBoxNum []:                                           FAIL
+        testfiles\TestFile_154.hs:552:
+        expected: 1
+         but got: 0
+      maxBoxNum [CLR n]:                                      OK
+      maxBoxNum [INC n]:                                      OK
+      maxBoxNum [JEQ n 20 30]:                                OK
+      maxBoxNum [JEQ 10 n 30]:                                OK
+    ==== General
+      maxBoxNum [CLR 5, INC 10, JEQ 40 30 20]:                OK
+    ==== Error Handling
+      maxBoxNum [CLR (-n)]:                                   FAIL
+        testfiles\TestFile_154.hs:570:
+        expected: 1
+         but got: 0
+      maxBoxNum [CLR 5, INC 10, JEQ 40 30 (-i) ]:             OK
+  ================ PROBLEM 2: show BATConfig
+    ==== Boundaries
+      {boxes = [], counter = 0}:                              OK
+      {boxes = [], counter = 12}:                             OK
+      {boxes = [5,4,3,2,1], counter = 0}:                     OK
+    ==== General
+      {boxes = [1,2,3,4,5], counter = 20}:                    OK
+  ================ PROBLEM 3: initialise
+    ==== Boundaries
+        boxes: initialise [] []:                              FAIL
+        testfiles\TestFile_154.hs:619:
+        expected: [0,0]
+         but got: [0]
+      counter: initialise [] []:                              OK
+        boxes: initialise [] [3,6,9]:                         OK
+      counter: initialise [] [3,6,9]:                         OK
+        boxes: initialise [CLR 5] []:                         OK
+      counter: initialise [CLR 5] []:                         OK
+        boxes: initialise [CLR 0] [1,2,3]:                    OK
+      counter: initialise [CLR 0] [1,2,3]:                    OK
+    ==== General
+        boxes: initialise [CLR 5, CLR 6, CLR 1] [1,2]:        OK
+      counter: initialise [CLR 5, CLR 6, CLR 1] [1,2]:        OK
+        boxes: initialise [CLR 1] [1,2]:                      OK
+      counter: initialise [CLR 1] [1,2]:                      OK
+    ==== Error Handling
+        boxes: initialise [CLR (-1)] [1,2]:                   OK
+      counter: initialise [CLR (-1)] [1,2]:                   OK
+  ================ PROBLEM 4: acceptState
+    ==== Boundaries
+      acceptState []: {counter = 0}:                          OK
+      acceptState []: {counter = 1}:                          OK
+      acceptState [CLR 5]: {counter = 0}:                     OK
+      acceptState [CLR 5]: {counter = 1}:                     OK
+    ==== General
+      acceptState [CLR 0, CLR 1, JEQ 1 2 3]: {counter = 0}:   OK
+      acceptState [CLR 0, CLR 1, JEQ 1 2 3]: {counter = 1}:   OK
+      acceptState [CLR 0, CLR 1, JEQ 1 2 3]: {counter = 2}:   OK
+      acceptState [CLR 0, CLR 1, JEQ 1 2 3]: {counter = 3}:   OK
+      acceptState [CLR 0, CLR 1, JEQ 1 2 3]: {counter = 17}:  OK
+    ==== Error Handling
+      acceptState [CLR 5]: {counter = (-1)}:                  FAIL
+        testfiles\TestFile_154.hs:692:
+        expected: True
+         but got: False
+  ================ PROBLEM 4: doNextMove
+    ==== Boundaries
+      doNextMove [] (initialise _ [1,2,3,4]):                 OK
+    ==== General
+      doNextMove [CLR 5] (initialise _ [1,2,3,4]):            OK
+      doNextMove:                                             OK
+      doNextMove [INC 2, JEQ 1 1 0] (initialise _ [1,2,3,4]): OK
+      doNextMove:                                             OK
+      doNextMove:                                             OK
+  ================ PROBLEM 6: runFrom
+    ==== Boundaries
+      runFrom [] (initialise):                                OK
+      runFrom [] (next):                                      OK
+    ==== General
+      runFrom [CLR 5] (initialise):                           OK
+      runFrom [CLR 5] (next):                                 OK
+  ================ PROBLEM 7: getOutput
+    ==== Boundaries
+      getOutput: {boxes = [4]}:                               OK
+      getOutput: {boxes = [4,5]}:                             OK
+    ==== General
+      getOutput: {boxes = [2,3,5,2]}:                         OK
+    ==== Error Handling
+      getOutput: {boxes = []}:                                OK
+  ================ PROBLEM 8: transpose
+    ==== Boundaries
+      transpose 0 [JEQ 5 6 7]:                                OK
+    ==== General
+      transpose 5 []:                                         OK
+      transpose 5 [CLR 7]:                                    OK
+      transpose 7 [CLR 1, JEQ 1 1 6]:                         OK
+    ==== Error Handling
+      transpose (-3) [JEQ 5 6 7]:                             FAIL
+        testfiles\TestFile_154.hs:835:
+        expected: [JEQ {box1 = 5, box2 = 6, target = 4}]
+         but got: [JEQ {box1 = 5, box2 = 6, target = 7}]
+  ================ PROBLEM 9: (*->*)
+    ==== Boundaries
+      [] *->* []:                                             OK
+      [] *->* [JEQ 1 1 0]:                                    OK
+      [JEQ 1 1 0] *->* []:                                    OK
+    ==== General
+      [JEQ 1 2 3] *->* [JEQ 2 2 8]:                           OK
+  ================ PROBLEM 10: adder
+    ==== Boundaries
+      execute adder [3]:                                      OK
+    ==== General
+      execute adder [3,4,5]:                                  OK
+      execute adder [123,876]:                                OK (0.03s)
+    ==== Error Handling
+      execute adder []:                                       OK
+  ================ PROBLEM 11: copyBox
+    ==== Boundaries
+      boxes $ runProgram (copyBox 0 0) [3]:                   OK
+      boxes $ runProgram (copyBox 0 1) [3]:                   OK
+      boxes $ runProgram (copyBox 1 0) [3]:                   FAIL
+        testfiles\TestFile_154.hs:910:
+        expected: [3,3]
+         but got: [0,3]
+      boxes $ runProgram (copyBox 1 1) [3]:                   OK
+    ==== General
+      boxes $ runProgram (copyBox 1 2) [3,4,5,6]:             OK
+    ==== Error Handling
+      boxes $ runProgram (copyBox 0 0) []:                    FAIL
+        testfiles\TestFile_154.hs:922:
+        expected: [0,0]
+         but got: [0]
+      boxes $ runProgram (copyBox 1 2) []:                    OK
+  ================ PROBLEM 12: addXY
+    ==== Boundaries
+      (addXY 0 0) []:                                         OK
+      (addXY 0 0) [7]:                                        OK
+      (addXY 1 1) [7]:                                        OK
+    ==== General
+      (addXY 1 2) [3,4]:                                      OK
+      (addXY 3 2) [5,6,7,8]:                                  OK
+      (addXY 2 2) [7,9]:                                      OK (0.01s)
+    ==== Error Handling
+      (addXY 3 2) []:                                         OK
+  ================ ADVANCED
+    ===== addXY leaves other boxes unchanged?
+      addXY 0 0:                                              FAIL
+        testfiles\TestFile_154.hs:969:
+        expected: [0,0,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+         but got: [0,0,0,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+      addXY 1 1:                                              FAIL
+        testfiles\TestFile_154.hs:972:
+        expected: [0,6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+         but got: [0,6,3,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+      addXY 2 3:                                              FAIL
+        testfiles\TestFile_154.hs:975:
+        expected: [0,9,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+         but got: [0,9,5,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+
+10 out of 80 tests failed (0.05s)
+                                                    
+=================================              
+END OF TEST RESULTS: 154                   
+=================================              
+                                                    
